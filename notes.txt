@@ -1,0 +1,45 @@
+# Idea is to first read an image
+# After reading the image, we want to make sure it is a square
+# We then want to break the square image it into grid sections 
+# The grid sections can then be averaged/moded/etc to find the most important color
+# These newly calculated values will fill the n x n matrix
+# Lego pieces with closest color value will fill the n x n matrix
+# Output the result
+
+
+Some caveats - 
+I want to use only the most common 1x1 plates sold to minimize cost; This restricts the colors I can use
+This means I will use the following colors (from bricklink: https://www.bricklink.com/catalogColors.asp)
+
+White
+Light Bluish Gray
+Light Gray
+Dark Gray
+Dark Bluish Gray
+Black
+Dark Red
+Red
+Dark Brown
+Brown
+Reddish Brown
+Dark Tan
+Tan
+Light Nougat
+Medium Nougat
+Dark Orange
+Orange
+Bright Light Orange
+Yellow
+Bright Light Yellow
+Lime
+Dark Green 
+Green
+Bright Green 
+Dark Blue 
+Blue
+Dark Azure 
+Medium Azure 
+Medium Blue
+Dark Purple 
+Magenta
+Dark Pink 
