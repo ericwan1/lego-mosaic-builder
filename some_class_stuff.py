@@ -1,5 +1,3 @@
-
-
 lego_colors = {
     '1': 'white',
     '86': 'lightbluishgray',

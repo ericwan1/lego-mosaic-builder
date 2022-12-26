@@ -8,7 +8,7 @@ MAKE_SQUARE = True
 OUTPUT_DIMS = (62,62)
 
 # Read the input photo, keep it
-MY_TEST_PHOTO = "test_image_dubu.jpg"
+MY_TEST_PHOTO = "test_image_irene.jpg"
 input = Image.open(MY_TEST_PHOTO)
 input_photo = input 
 
@@ -36,17 +36,23 @@ resized_input_photo = input_photo.resize((OUTPUT_DIMS[0], OUTPUT_DIMS[1]))
 # For calculating what the closest color each resized pixel is to the original, we will use the euclidean distance
 # For efficient look up I will use a K-D Tree, because of its conduciveness for multidimensional search (here we have 3)
 colors = list(some_class_stuff.lego_color_rgb.values())
+colors_keys = list(some_class_stuff.lego_color_rgb.keys())
+
 kdtree = spatial.KDTree(colors)
 closest_colors_mat = np.zeros((new_width, new_height))
 # output_colors_list is used to store the rgb values we are building the new image with
 output_colors_list = []
+# Map to store brick counts
+output_brick_count = dict()
 
 for i in range(new_width):
 	for j in range(new_height):
 		pixel = resized_input_photo.getpixel((i, j))  
 		closest_ind = int(kdtree.query(pixel)[1])
+		# We populate the matrix that will be used for our blueprint, the output image, and the piece count
 		closest_colors_mat[i, j] = closest_ind
 		output_colors_list.append(list(colors[closest_ind]))
+		output_brick_count[closest_ind] = output_brick_count.get(closest_ind, 0) + 1
 
 output_colors_list = [rgb_val for pxl in output_colors_list for rgb_val in pxl]
 output_colors = bytes(output_colors_list)
@@ -56,4 +62,12 @@ lego_output_img = Image.frombytes("RGB", (new_width, new_height), output_colors)
 lego_output_img = lego_output_img.rotate(270).transpose(Image.FLIP_LEFT_RIGHT)
 lego_output_img.show()
 
+# Match names of bricks with the indexes - we don't have to worry because python dictionaries preserve order as of 3.6+
+# Create triplets with bricklink id, color name, count
+output_triplet = []
+
+for key_ind in output_brick_count.keys():
+	color_key = colors_keys[key_ind]
+	color_name = some_class_stuff.lego_colors[color_key]
+	output_triplet.append((color_key, color_name, output_brick_count[key_ind]))
 
