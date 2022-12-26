@@ -8,7 +8,7 @@ MAKE_SQUARE = True
 OUTPUT_DIMS = (62,62)
 
 # Read the input photo, keep it
-MY_TEST_PHOTO = "test_image_hotdog.png"
+MY_TEST_PHOTO = "test_image_dubu.jpg"
 input = Image.open(MY_TEST_PHOTO)
 input_photo = input 
 
@@ -23,11 +23,15 @@ if input.size[0] != input.size[1]:
 		input_photo = input.crop((0, 0, width, width))
 
 # Take cropped (or uncropped) input_photo and rescale to the desired dimensions
-SCALE_FACTOR_WIDTH = float(OUTPUT_DIMS[0] / input_photo.size[0])
-SCALE_FACTOR_HEIGHT = float(OUTPUT_DIMS[1] / input_photo.size[1])
-new_width = int(np.round(input_photo.size[0] * SCALE_FACTOR_WIDTH))
-new_height = int(np.round(input_photo.size[1] * SCALE_FACTOR_HEIGHT))
-resized_input_photo = input_photo.resize((new_width, new_height))
+# SCALE_FACTOR_WIDTH = float(OUTPUT_DIMS[0] / input_photo.size[0])
+# SCALE_FACTOR_HEIGHT = float(OUTPUT_DIMS[1] / input_photo.size[1])
+# new_width = int(np.round(input_photo.size[0] * SCALE_FACTOR_WIDTH))
+# new_height = int(np.round(input_photo.size[1] * SCALE_FACTOR_HEIGHT))
+# resized_input_photo = input_photo.resize((new_width, new_height))
+
+new_width = OUTPUT_DIMS[0]
+new_height = OUTPUT_DIMS[1]
+resized_input_photo = input_photo.resize((OUTPUT_DIMS[0], OUTPUT_DIMS[1]))
 
 # For calculating what the closest color each resized pixel is to the original, we will use the euclidean distance
 # For efficient look up I will use a K-D Tree, because of its conduciveness for multidimensional search (here we have 3)
