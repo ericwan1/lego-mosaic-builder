@@ -1,6 +1,7 @@
 from PIL import Image
 import numpy as np
 from scipy import spatial
+import pandas as pd
 import some_class_stuff
 
 # Settings for the script
@@ -8,7 +9,7 @@ MAKE_SQUARE = True
 OUTPUT_DIMS = (62,62)
 
 # Read the input photo, keep it
-MY_TEST_PHOTO = "test_image_irene.jpg"
+MY_TEST_PHOTO = "./images/test_image_gaeul.jpeg"
 input = Image.open(MY_TEST_PHOTO)
 input_photo = input 
 
@@ -60,7 +61,6 @@ output_colors = bytes(output_colors_list)
 # Now we create the final output image; we substitute each new pixel in the mosaic with the RGB color we have selected
 lego_output_img = Image.frombytes("RGB", (new_width, new_height), output_colors)
 lego_output_img = lego_output_img.rotate(270).transpose(Image.FLIP_LEFT_RIGHT)
-lego_output_img.show()
 
 # Match names of bricks with the indexes - we don't have to worry because python dictionaries preserve order as of 3.6+
 # Create triplets with bricklink id, color name, count
@@ -71,3 +71,9 @@ for key_ind in output_brick_count.keys():
 	color_name = some_class_stuff.lego_colors[color_key]
 	output_triplet.append((color_key, color_name, output_brick_count[key_ind]))
 
+output_df = pd.DataFrame(output_triplet, columns = ["colorId", "name", "brickCount"])
+fileloc = "./mosaic-outputs/" + MY_TEST_PHOTO.split(".")[1].split("/")[2]+".csv"
+print(fileloc)
+imageloc = "./mosaic-outputs/" + MY_TEST_PHOTO.split(".")[1].split("/")[2]+".jpg"
+output_df.to_csv(path_or_buf=fileloc)
+lego_output_img.save(imageloc, "JPEG", quality=80, optimize=True, progressive=True)
