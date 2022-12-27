@@ -9,7 +9,7 @@ MAKE_SQUARE = True
 OUTPUT_DIMS = (62,62)
 
 # Read the input photo, keep it
-MY_TEST_PHOTO = "./images/test_image_gaeul.jpeg"
+MY_TEST_PHOTO = "./images/test_image_iu.jpg"
 input = Image.open(MY_TEST_PHOTO)
 input_photo = input 
 
